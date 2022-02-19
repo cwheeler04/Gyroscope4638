@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.DigitalSource;
 
 /**
@@ -19,8 +20,20 @@ public final class DriveConstants {
     public static final int kLeftMotor2Port = 9;
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
+    public static final double kEncoderDistancePerPulse = ((1/7)*0.1524*Math.PI)/4096.0;
     public static DigitalSource[] kLeftEncoderPorts;
     public static DigitalSource kLeftEncoderReversed;
     public static DigitalSource[] kRightEncoderPorts;
     public static DigitalSource kRightEncoderReversed;
+    public static final double ksVolts = 0.12763;
+  public static final double kvVoltSecondsPerMeter = 0.26026;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.071788;
+  public static final double kPDriveVel = 2.3672;
+  public static final double kTrackwidthMeters = 0.69; //TODO: add our width 
+  public static final double kMaxSpeedMetersPerSecond = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+  public static final double kRamseteB = 2;
+  public static final double kRamseteZeta = 0.7;
+  public static final DifferentialDriveKinematics kDriveKinematics =
+  new DifferentialDriveKinematics(kTrackwidthMeters);
 }
