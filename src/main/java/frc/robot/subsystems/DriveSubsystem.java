@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -54,6 +55,12 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_leftBack = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
   private CANSparkMax m_rightFront = new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless);
   private CANSparkMax m_rightBack = new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless);
+  private RelativeEncoder m_rightFrontEncoder;
+  private RelativeEncoder m_rightBackEncoder;
+  private RelativeEncoder m_leftFrontEncoder;
+  private RelativeEncoder m_leftBackEncoder;
+  
+
 
   private MotorControllerGroup m_left;
   private MotorControllerGroup m_right;
@@ -100,11 +107,17 @@ private final DifferentialDriveOdometry m_odometry;
     m_left  = new MotorControllerGroup(m_leftFront, m_leftBack);
     m_right = new MotorControllerGroup(m_rightFront, m_rightBack);
     m_robotDrive = new DifferentialDrive(m_left, m_right);
+    m_robotDrive.setDeadband(0.15);
+    m_robotDrive.setSafetyEnabled(false);
+    m_rightFrontEncoder = m_rightFront.getEncoder();
+    m_rightBackEncoder = m_rightBack.getEncoder();
+    m_leftFrontEncoder = m_leftFront.getEncoder();
+    m_leftBackEncoder = m_leftBack.getEncoder();
   
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_right.setInverted(true);
+    m_left.setInverted(true);
 
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -235,4 +248,5 @@ private final DifferentialDriveOdometry m_odometry;
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+  
 }
