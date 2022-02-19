@@ -20,20 +20,22 @@ public final class DriveConstants {
     public static final int kLeftMotor2Port = 9;
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
-    public static final double kEncoderDistancePerPulse = ((1/7)*0.1524*Math.PI)/4096.0;
+    public static final double kEncoderDistancePerPulse = ((1/20)*0.1524*Math.PI)/4096.0;
+    public static final double kTicksPerMeter = (1/3544.85)*0.0254;
+    //public static final double kEncoderDistancePerPulse = 20;
     
     public static final int[] kLeftEncoderPorts = new int[] {kLeftMotor1Port, kLeftMotor2Port};
     public static final int[] kRightEncoderPorts = new int[] {kRightMotor1Port, kRightMotor2Port};
-    public static final boolean kLeftEncoderReversed = false;
-    public static final boolean kRightEncoderReversed = true;
+    public static final boolean kLeftEncoderReversed = true;
+    public static final boolean kRightEncoderReversed = false;
 
     public static final double ksVolts = 0.12763;
   public static final double kvVoltSecondsPerMeter = 0.26026;
   public static final double kaVoltSecondsSquaredPerMeter = 0.071788;
   public static final double kPDriveVel = 2.3672;
   public static final double kTrackwidthMeters = 0.69; //TODO: add our width 
-  public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+  public static final double kMaxSpeedMetersPerSecond = 0.25;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0.25;
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
   public static final DifferentialDriveKinematics kDriveKinematics =

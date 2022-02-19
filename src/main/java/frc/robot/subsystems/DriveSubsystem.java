@@ -103,6 +103,8 @@ private final DifferentialDriveOdometry m_odometry;
     m_rightFront.setIdleMode(IdleMode.kBrake);
     m_leftBack.setIdleMode(IdleMode.kBrake);
     m_rightBack.setIdleMode(IdleMode.kBrake);
+    m_leftFront.setInverted(true);
+    m_leftBack.setInverted(true);
     SmartDashboard.putBoolean("gyro connection", m_gyro.isConnected());
     m_left  = new MotorControllerGroup(m_leftFront, m_leftBack);
     m_right = new MotorControllerGroup(m_rightFront, m_rightBack);
@@ -113,11 +115,25 @@ private final DifferentialDriveOdometry m_odometry;
     m_rightBackEncoder = m_rightBack.getEncoder();
     m_leftFrontEncoder = m_leftFront.getEncoder();
     m_leftBackEncoder = m_leftBack.getEncoder();
+    m_leftBackEncoder.setPosition(0);
+    m_leftFrontEncoder.setPosition(0);
+    m_rightBackEncoder.setPosition(0);
+    m_rightFrontEncoder.setPosition(0);
+
+    /*m_rightFrontEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_rightFrontEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_rightBackEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_rightBackEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_leftFrontEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_leftFrontEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_leftBackEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_leftBackEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);*/
+  
   
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_left.setInverted(true);
+   // m_left.setInverted(true);
 
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -130,9 +146,15 @@ private final DifferentialDriveOdometry m_odometry;
 
   @Override
   public void periodic() {
+    System.out.println("left side velocity " + getLeftEncoderSpeed() + " right side velocity " + getRightEncoderSpeed());
+    SmartDashboard.putNumber("right velocity", getRightEncoderSpeed());
+    SmartDashboard.putNumber("left velocity", getLeftEncoderSpeed());
      // Update the odometry in the periodic block
      m_odometry.update(
-      m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+      m_gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance());
+      
+    SmartDashboard.putNumber("right encoder distance", getRightEncoderDistance());
+    SmartDashboard.putNumber("left encoder distance", getLeftEncoderDistance());
   }  
   /**
    * Returns the currently-estimated pose of the robot.
@@ -149,7 +171,7 @@ private final DifferentialDriveOdometry m_odometry;
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderSpeed(), getRightEncoderSpeed());
   }
 
   /**
@@ -188,6 +210,10 @@ private final DifferentialDriveOdometry m_odometry;
   public void resetEncoders() {
     m_leftEncoder.reset();
     m_rightEncoder.reset();
+    m_leftBackEncoder.setPosition(0);
+    m_leftFrontEncoder.setPosition(0);
+    m_rightBackEncoder.setPosition(0);
+    m_rightFrontEncoder.setPosition(0);
   }
 
   /**
@@ -196,7 +222,7 @@ private final DifferentialDriveOdometry m_odometry;
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2.0;
   }
 
   /**
@@ -204,7 +230,7 @@ private final DifferentialDriveOdometry m_odometry;
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
+  private Encoder getLeftEncoder() {
     return m_leftEncoder;
   }
 
@@ -213,7 +239,7 @@ private final DifferentialDriveOdometry m_odometry;
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
+  private Encoder getRightEncoder() {
     return m_rightEncoder;
   }
 
@@ -248,5 +274,19 @@ private final DifferentialDriveOdometry m_odometry;
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+  public double getRightEncoderDistance(){
+    return ((m_rightBackEncoder.getPosition()+m_rightFrontEncoder.getPosition())/2.0)*DriveConstants.kTicksPerMeter;
+    
+  }
+  public double getLeftEncoderDistance(){
+    return ((m_leftBackEncoder.getPosition()+m_leftFrontEncoder.getPosition())/2.0)*DriveConstants.kTicksPerMeter; 
+    
+  }
+  public double getLeftEncoderSpeed(){
+    return ((m_leftBackEncoder.getVelocity()+m_leftFrontEncoder.getVelocity())/20.0)*DriveConstants.kTicksPerMeter;
+  }
   
+  public double getRightEncoderSpeed(){
+    return ((m_rightBackEncoder.getVelocity()+m_rightFrontEncoder.getVelocity())/20.0)*DriveConstants.kTicksPerMeter;
+  }
 }
