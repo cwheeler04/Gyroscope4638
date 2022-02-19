@@ -21,10 +21,12 @@ public final class DriveConstants {
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
     public static final double kEncoderDistancePerPulse = ((1/7)*0.1524*Math.PI)/4096.0;
-    public static DigitalSource[] kLeftEncoderPorts;
-    public static DigitalSource kLeftEncoderReversed;
-    public static DigitalSource[] kRightEncoderPorts;
-    public static DigitalSource kRightEncoderReversed;
+    
+    public static final int[] kLeftEncoderPorts = new int[] {kLeftMotor1Port, kLeftMotor2Port};
+    public static final int[] kRightEncoderPorts = new int[] {kRightMotor1Port, kRightMotor2Port};
+    public static final boolean kLeftEncoderReversed = false;
+    public static final boolean kRightEncoderReversed = true;
+
     public static final double ksVolts = 0.12763;
   public static final double kvVoltSecondsPerMeter = 0.26026;
   public static final double kaVoltSecondsSquaredPerMeter = 0.071788;

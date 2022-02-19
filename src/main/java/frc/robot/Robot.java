@@ -18,8 +18,11 @@ import edu.wpi.first.wpilibj.SerialPort;
  * project.
  */
 public class Robot extends TimedRobot {
+  /*
   private AHRS ahrs;
+  */
   private Command m_autonomousCommand;
+  
 
   private RobotContainer m_robotContainer;
 
@@ -29,13 +32,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    /*
     ahrs = new AHRS(SerialPort.Port.kUSB); 
     SmartDashboard.putString("Calibrated", "currently calibrating");
     ahrs.calibrate();
     SmartDashboard.putString("Calibrated", "Calibration complete");
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    */
     m_robotContainer = new RobotContainer();
+    
   }
 
   /**
@@ -47,6 +53,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    /*
     SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
     SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
     SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
@@ -83,6 +90,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(   "IMU_Byte_Count",       ahrs.getByteCount());
     SmartDashboard.putNumber(   "IMU_Update_Count",     ahrs.getUpdateCount());
     SmartDashboard.putNumber("Rotation", ahrs.getRotation2d().getDegrees());
+    */
     
     
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled

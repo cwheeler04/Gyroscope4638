@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -26,6 +29,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -46,9 +50,16 @@ public class DriveSubsystem extends SubsystemBase {
   public static final double kRamseteZeta = 0.7;
   
 
+  private CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
+  private CANSparkMax m_leftBack = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
+  private CANSparkMax m_rightFront = new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless);
+  private CANSparkMax m_rightBack = new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless);
 
+  private MotorControllerGroup m_left;
+  private MotorControllerGroup m_right;
+  private DifferentialDrive m_robotDrive;
 
-  private MotorControllerGroup m_leftMotors =
+  /**private MotorControllerGroup m_leftMotors =
   new MotorControllerGroup(
       new PWMSparkMax(DriveConstants.kLeftMotor1Port),
       new PWMSparkMax(DriveConstants.kLeftMotor2Port));
@@ -60,7 +71,7 @@ private MotorControllerGroup m_rightMotors =
       new PWMSparkMax(DriveConstants.kRightMotor2Port));
 // The robot's drive
 private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotors, m_rightMotors);
-
+**/
 // The left-side drive encoder
 private final Encoder m_leftEncoder =
   new Encoder(
@@ -81,10 +92,19 @@ private final AHRS m_gyro = new AHRS(SerialPort.Port.kUSB);
 // Odometry class for tracking robot pose
 private final DifferentialDriveOdometry m_odometry;
   public DriveSubsystem() {
+    m_leftFront.setIdleMode(IdleMode.kBrake);
+    m_rightFront.setIdleMode(IdleMode.kBrake);
+    m_leftBack.setIdleMode(IdleMode.kBrake);
+    m_rightBack.setIdleMode(IdleMode.kBrake);
+    SmartDashboard.putBoolean("gyro connection", m_gyro.isConnected());
+    m_left  = new MotorControllerGroup(m_leftFront, m_leftBack);
+    m_right = new MotorControllerGroup(m_rightFront, m_rightBack);
+    m_robotDrive = new DifferentialDrive(m_left, m_right);
+  
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_rightMotors.setInverted(true);
+    m_right.setInverted(true);
 
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -145,8 +165,9 @@ private final DifferentialDriveOdometry m_odometry;
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(rightVolts);
+    //m_leftMotors.setVoltage(leftVolts);
+    m_left.setVoltage(leftVolts);
+    m_right.setVoltage(rightVolts);
     m_robotDrive.feed();
   }
 
