@@ -155,6 +155,10 @@ private final DifferentialDriveOdometry m_odometry;
       
     SmartDashboard.putNumber("right encoder distance", getRightEncoderDistance());
     SmartDashboard.putNumber("left encoder distance", getLeftEncoderDistance());
+    
+    SmartDashboard.putNumber("Odometry X: ", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Odometry Y: ", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Odometry Degrees: ", m_odometry.getPoseMeters().getRotation().getDegrees());
   }  
   /**
    * Returns the currently-estimated pose of the robot.
