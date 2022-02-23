@@ -279,18 +279,18 @@ private final DifferentialDriveOdometry m_odometry;
     return -m_gyro.getRate();
   }
   public double getRightEncoderDistance(){
-    return ((m_rightBackEncoder.getPosition()+m_rightFrontEncoder.getPosition())/2.0)*DriveConstants.kTicksPerMeter;
+    return (m_rightFrontEncoder.getPosition())*DriveConstants.kEncoderDistancePerPulse;
     
   }
   public double getLeftEncoderDistance(){
-    return ((m_leftBackEncoder.getPosition()+m_leftFrontEncoder.getPosition())/2.0)*DriveConstants.kTicksPerMeter; 
+    return (m_leftFrontEncoder.getPosition())*DriveConstants.kEncoderDistancePerPulse; 
     
   }
   public double getLeftEncoderSpeed(){
-    return ((m_leftBackEncoder.getVelocity()+m_leftFrontEncoder.getVelocity())/20.0)*DriveConstants.kTicksPerMeter;
+    return ((m_leftFrontEncoder.getVelocity())*DriveConstants.kEncoderDistancePerPulse)/60;
   }
   
   public double getRightEncoderSpeed(){
-    return ((m_rightBackEncoder.getVelocity()+m_rightFrontEncoder.getVelocity())/20.0)*DriveConstants.kTicksPerMeter;
+    return ((m_rightFrontEncoder.getVelocity())*DriveConstants.kEncoderDistancePerPulse)/60;
   }
 }

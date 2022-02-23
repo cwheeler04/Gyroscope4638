@@ -20,8 +20,9 @@ public final class DriveConstants {
     public static final int kLeftMotor2Port = 9;
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
-    public static final double kEncoderDistancePerPulse = ((1/20)*0.1524*Math.PI)/4096.0;
-    public static final double kTicksPerMeter = (1/3544.85)*0.0254;
+    
+    public static final double kTicksPerMeter = 14.62; //(1/3544.85)*0.02.5
+    public static final double kEncoderDistancePerPulse = 1.0 / kTicksPerMeter; //((1/20)*0.1524*Math.PI)/4096.0
     //public static final double kEncoderDistancePerPulse = 20;
     
     public static final int[] kLeftEncoderPorts = new int[] {kLeftMotor1Port, kLeftMotor2Port};
@@ -33,7 +34,7 @@ public final class DriveConstants {
   public static final double kvVoltSecondsPerMeter = 0.26026;
   public static final double kaVoltSecondsSquaredPerMeter = 0.071788;
   public static final double kPDriveVel = 2.3672;
-  public static final double kTrackwidthMeters = 0.69; //TODO: add our width 
+  public static final double kTrackwidthMeters = 0.555; //TODO: add our width 
   public static final double kMaxSpeedMetersPerSecond = 0.25;
   public static final double kMaxAccelerationMetersPerSecondSquared = 0.25;
   public static final double kRamseteB = 2;
