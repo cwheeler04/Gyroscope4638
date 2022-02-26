@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   //String trajectoryJSON = "paths/Path1.wpilib.json";
-  String trajectoryJSON = "paths/SemiCircle3.wpilib.json";
+  String trajectoryJSON = "paths/FullCircle3.wpilib.json";
   Trajectory trajectory = new Trajectory();
 
   /**
