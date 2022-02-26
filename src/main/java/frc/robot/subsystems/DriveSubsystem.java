@@ -99,10 +99,10 @@ private final AHRS m_gyro = new AHRS(SerialPort.Port.kUSB);
 // Odometry class for tracking robot pose
 private final DifferentialDriveOdometry m_odometry;
   public DriveSubsystem() {
-    m_leftFront.setIdleMode(IdleMode.kCoast);
-    m_rightFront.setIdleMode(IdleMode.kCoast);
-    m_leftBack.setIdleMode(IdleMode.kCoast);
-    m_rightBack.setIdleMode(IdleMode.kCoast);
+    m_leftFront.setIdleMode(IdleMode.kBrake);
+    m_rightFront.setIdleMode(IdleMode.kBrake);
+    m_leftBack.setIdleMode(IdleMode.kBrake);
+    m_rightBack.setIdleMode(IdleMode.kBrake);
     m_leftFront.setInverted(true);
     m_leftBack.setInverted(true);
     SmartDashboard.putBoolean("gyro connection", m_gyro.isConnected());
@@ -140,13 +140,15 @@ private final DifferentialDriveOdometry m_odometry;
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
     resetEncoders();
-    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+    Rotation2d r = m_gyro.getRotation2d();
+    m_odometry = new DifferentialDriveOdometry(r);
+    System.out.printf("Inital heading equals %f", r.getRadians());
 
   }
 
   @Override
   public void periodic() {
-    System.out.println("left side velocity " + getLeftEncoderSpeed() + " right side velocity " + getRightEncoderSpeed());
+    //System.out.println("left side velocity " + getLeftEncoderSpeed() + " right side velocity " + getRightEncoderSpeed());
     SmartDashboard.putNumber("right velocity", getRightEncoderSpeed());
     SmartDashboard.putNumber("left velocity", getLeftEncoderSpeed());
      // Update the odometry in the periodic block
