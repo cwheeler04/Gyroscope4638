@@ -35,11 +35,14 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveSubsystem m_robotDrive= new DriveSubsystem();
+
+  private Trajectory mTrajectory;
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
+  public RobotContainer(Trajectory pathWeaverTrajectory) {
+    mTrajectory = pathWeaverTrajectory;
+    // Configure the button btindings
     configureButtonBindings();
   }
 
@@ -78,7 +81,7 @@ public class RobotContainer {
             .addConstraint(autoVoltageConstraint);
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
+   /* Trajectory exampleTrajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
@@ -88,13 +91,13 @@ public class RobotContainer {
 
             List.of(new Translation2d(3, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(4, -4, new Rotation2d(-Math.PI/2)),
+            new Pose2d(4, -4, new Rotation2d(Math.PI/2)),
             // Pass config 
             config);
-
+    */
     RamseteCommand ramseteCommand =
         new RamseteCommand(
-            exampleTrajectory,
+            mTrajectory,
             m_robotDrive::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -111,7 +114,7 @@ public class RobotContainer {
 
     // Reset odometry to the starting pose of the trajectory.
     m_robotDrive.zeroHeading();
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    m_robotDrive.resetOdometry(mTrajectory.getInitialPose());
     
 
     // Run path following command, then stop at the end.

@@ -38,18 +38,6 @@ import frc.robot.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
-  public static final double ksVolts = 0.12763;
-  public static final double kvVoltSecondsPerMeter = 0.26026;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.071788;
-  public static final double kPDriveVel = 2.3672;
-  public static final double kTrackwidthMeters = 0.69; //TODO: add our width 
-  public static final DifferentialDriveKinematics kDriveKinematics =
-        new DifferentialDriveKinematics(kTrackwidthMeters);
-  public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-  public static final double kRamseteB = 2;
-  public static final double kRamseteZeta = 0.7;
-  
 
   private CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
   private CANSparkMax m_leftBack = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
@@ -103,8 +91,10 @@ private final DifferentialDriveOdometry m_odometry;
     m_rightFront.setIdleMode(IdleMode.kCoast);
     m_leftBack.setIdleMode(IdleMode.kCoast);
     m_rightBack.setIdleMode(IdleMode.kCoast);
-    m_leftFront.setInverted(true);
-    m_leftBack.setInverted(true);
+    m_leftFront.setInverted(false);
+    m_leftBack.setInverted(false);
+    m_rightFront.setInverted(true);
+    m_rightBack.setInverted(true);
     SmartDashboard.putBoolean("gyro connection", m_gyro.isConnected());
     m_left  = new MotorControllerGroup(m_leftFront, m_leftBack);
     m_right = new MotorControllerGroup(m_rightFront, m_rightBack);
@@ -208,7 +198,7 @@ private final DifferentialDriveOdometry m_odometry;
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     //m_leftMotors.setVoltage(leftVolts);
     m_left.setVoltage(leftVolts);
-    m_right.setVoltage(rightVolts);
+    m_right.setVoltage(rightVolts); 
     m_robotDrive.feed();
   }
 
