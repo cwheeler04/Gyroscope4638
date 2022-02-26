@@ -86,10 +86,10 @@ public class RobotContainer {
 
             //List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
 
-            List.of(new Translation2d(2, 0), new Translation2d(4, 2)),
+            List.of(new Translation2d(3, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(6, -2, new Rotation2d(-Math.PI/2)),
-            // Pass config
+            new Pose2d(4, -4, new Rotation2d(-Math.PI/2)),
+            // Pass config 
             config);
 
     RamseteCommand ramseteCommand =
