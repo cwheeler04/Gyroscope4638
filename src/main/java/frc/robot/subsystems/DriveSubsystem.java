@@ -87,10 +87,10 @@ private final AHRS m_gyro = new AHRS(SerialPort.Port.kUSB);
 // Odometry class for tracking robot pose
 private final DifferentialDriveOdometry m_odometry;
   public DriveSubsystem() {
-    m_leftFront.setIdleMode(IdleMode.kCoast);
-    m_rightFront.setIdleMode(IdleMode.kCoast);
-    m_leftBack.setIdleMode(IdleMode.kCoast);
-    m_rightBack.setIdleMode(IdleMode.kCoast);
+    m_leftFront.setIdleMode(IdleMode.kBrake);
+    m_rightFront.setIdleMode(IdleMode.kBrake);
+    m_leftBack.setIdleMode(IdleMode.kBrake);
+    m_rightBack.setIdleMode(IdleMode.kBrake);
     m_leftFront.setInverted(false);
     m_leftBack.setInverted(false);
     m_rightFront.setInverted(true);
