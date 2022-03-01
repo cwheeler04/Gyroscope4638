@@ -35,9 +35,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Trajectory m_trajectory; 
+
   //String trajectoryJSON = "paths/Path1.wpilib.json";
-  String trajectoryJSON = "paths/FullCircle3.wpilib.json";
-  Trajectory trajectory = new Trajectory();
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,13 +46,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-   
+    String trajectoryJSON = "paths/FullCircle3.wpilib.json";
+    m_trajectory = new Trajectory();
+    
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-     } catch (IOException ex) {
-        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-      }
+      m_trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+   
+    
     /*
     ahrs = new AHRS(SerialPort.Port.kUSB); 
     SmartDashboard.putString("Calibrated", "currently calibrating");
@@ -60,7 +65,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     */
-    m_robotContainer = new RobotContainer(trajectory);
+    m_robotContainer = new RobotContainer(m_trajectory);
     
   }
 
