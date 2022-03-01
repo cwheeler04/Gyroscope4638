@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveAutoCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RobotAutoCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,14 +37,18 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private final DriveAutoCommand m_driveAutoCommand = new DriveAutoCommand(m_driveSubsystem);
+  private final DriveAutoCommand m_driveAutoCommand;
+
+  private final RobotAutoCommand m_sequentialAutoCommand;
+
 
 
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
+  public RobotContainer(Trajectory traj_1) {
+    m_driveAutoCommand = new DriveAutoCommand(m_driveSubsystem, traj_1);
+    m_sequentialAutoCommand = new RobotAutoCommand(m_driveSubsystem, traj_1);
     // Configure the button btindings
     configureButtonBindings();
   }
@@ -63,6 +68,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return m_driveAutoCommand;
+    return m_sequentialAutoCommand;
   }
 }
